@@ -1,42 +1,49 @@
 import { Component } from '@angular/core';
 
+interface Post {
+  username: string;
+  caption: string;
+  likes: number;
+  comments: string[];
+}
+
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.css']
 })
 export class TodoComponent {
-  todoItems: string[] = ['Learn Angular', 'Build a small app'];
-  newTask: string = '';
-  editedTask: string = '';
-  editIndex: number = -1;
+  posts: Post[] = [
+    {
+      username: 'user1',
+      caption: 'This is post 1',
+      likes: 10,
+      comments: ['Comment 1', 'Comment 2']
+    },
+    {
+      username: 'user2',
+      caption: 'This is post 2',
+      likes: 5,
+      comments: ['Comment 3']
+    }
+  ];
 
-  addTask() {
-    if (this.newTask.trim() !== '') {
-      this.todoItems.push(this.newTask);
-      this.newTask = '';
+  newPost: Post = {
+    username: '',
+    caption: '',
+    likes: 0,
+    comments: []
+  };
+
+  addPost() {
+    if (this.newPost.username.trim() !== '' && this.newPost.caption.trim() !== '') {
+      this.posts.push({ ...this.newPost });
+      this.newPost.username = '';
+      this.newPost.caption = '';
     }
   }
 
-  editTask(index: number) {
-    this.editIndex = index;
-    this.editedTask = this.todoItems[index];
-  }
-
-  saveTask(index: number) {
-    if (this.editedTask.trim() !== '') {
-      this.todoItems[index] = this.editedTask;
-      this.editIndex = -1;
-      this.editedTask = '';
-    }
-  }
-
-  cancelEdit() {
-    this.editIndex = -1;
-    this.editedTask = '';
-  }
-
-  deleteTask(index: number) {
-    this.todoItems.splice(index, 1);
+  deletePost(index: number) {
+    this.posts.splice(index, 1);
   }
 }
